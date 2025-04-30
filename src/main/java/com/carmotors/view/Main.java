@@ -1,20 +1,20 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
-package com.carmotors.run;
-
-import com.carmotors.controller.RepuestoController;
-import com.carmotors.modelDAO.RepuestoDAO;
-import com.carmotors.view.VistaRepuesto;
-import javax.swing.SwingUtilities;
+package com.carmotors.view;
 
 /**
  *
  * @author ANDRES
  */
-public class ProyectoJAVA_CarMotors_AndersonAndresAda {
+import com.carmotors.modelDAO.RepuestoDAO;
+import com.carmotors.view.VistaRepuesto;
+import com.carmotors.controller.RepuestoController;
 
+import javax.swing.SwingUtilities;
+
+public class Main {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             VistaRepuesto vista = new VistaRepuesto();
@@ -22,6 +22,5 @@ public class ProyectoJAVA_CarMotors_AndersonAndresAda {
             new RepuestoController(vista, dao);
             vista.setVisible(true);
         });
-  
     }
 }
