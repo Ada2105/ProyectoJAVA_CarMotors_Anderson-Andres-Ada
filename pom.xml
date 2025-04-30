@@ -10,4 +10,11 @@
         <maven.compiler.release>17</maven.compiler.release>
         <exec.mainClass>com.mycompany.proyectojava_carmotors_anderson.andres.ada.ProyectoJAVA_CarMotors_AndersonAndresAda</exec.mainClass>
     </properties>
+    <dependencies>
+    <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+        <version>8.0.33</version> <!-- Usa la versión más reciente -->
+    </dependency>
+    </dependencies>
 </project>
