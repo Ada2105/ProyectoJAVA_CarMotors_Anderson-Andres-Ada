@@ -6,13 +6,13 @@ package com.carmotors.modelDAO;
 
 import com.carmotors.model.Repuesto;
 
+
 /**
  *
  * @author ANDRES
  */
-public interface RepuestoDAOInterface {
-    
-     void agregarRepuesto(Repuesto repuesto);
+public interface CrudDAO<T> {
 
-    
+     void agregar(T entidad);
+
 }
