@@ -2,40 +2,39 @@ package com.carmotors.controller;
 
 import com.carmotors.model.Repuesto;
 import com.carmotors.modelDAO.RepuestoDAO;
-import com.carmotors.view.VistaRepuesto;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import com.carmotors.view.PanelRepuesto;
+import javax.swing.JOptionPane;
 
 public class RepuestoController {
-    private VistaRepuesto vista;
-    private RepuestoDAO dao;
+    private PanelRepuesto vista;
+    private RepuestoDAO repuestoDAO;
 
-    public RepuestoController(VistaRepuesto vista, RepuestoDAO dao) {
+    public RepuestoController(PanelRepuesto vista, RepuestoDAO repuestoDAO) {
         this.vista = vista;
-        this.dao = dao;
-
-        this.vista.setGuardarListener(new GuardarListener());
-        this.vista.setLimpiarListener(new LimpiarListener());
+        this.repuestoDAO = repuestoDAO;
+        this.vista.setGuardarListener(e -> guardarRepuesto());
     }
 
-    class GuardarListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            try {
-                Repuesto repuesto = vista.getDatosFormulario();
-                dao.agregarRepuesto(repuesto);
-                vista.mostrarMensaje("Repuesto guardado correctamente.");
-            } catch (Exception ex) {
-                vista.mostrarMensaje("Error al guardar el repuesto: " + ex.getMessage());
-            }
+    private void guardarRepuesto() {
+        try {
+            Repuesto repuesto = vista.getDatosFormulario();
+            repuestoDAO.agregar(repuesto);
+            JOptionPane.showMessageDialog(vista, "Repuesto guardado correctamente");
+            vista.limpiarFormulario();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(vista, "Error al guardar: " + e.getMessage());
         }
     }
 
-    class LimpiarListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            vista.setDatosFormulario(new Repuesto()); // Limpia el formulario
+
+    public void cargarRepuesto(Repuesto repuesto) {
+        if (repuesto != null) {
+            vista.setDatosFormulario(repuesto);
         }
+    }
+
+    public void limpiarFormulario() {
+        vista.limpiarFormulario();
     }
 }
+

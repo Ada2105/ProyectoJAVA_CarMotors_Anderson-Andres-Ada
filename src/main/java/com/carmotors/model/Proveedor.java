@@ -12,7 +12,7 @@ public class Proveedor {
     private Integer id;
     private String nombre;
     private String nit;
-    private String coctacto;
+    private String contacto;
     private Integer frecuenciaVisitas;   
 
     public Proveedor() {
@@ -22,7 +22,7 @@ public class Proveedor {
         this.id = id;
         this.nombre = nombre;
         this.nit = nit;
-        this.coctacto = coctacto;
+        this.contacto = coctacto;
         this.frecuenciaVisitas = frecuenciaVisitas;
     }
 
@@ -50,12 +50,12 @@ public class Proveedor {
         this.nit = nit;
     }
 
-    public String getCoctacto() {
-        return coctacto;
+    public String getContacto() {
+        return contacto;
     }
 
-    public void setCoctacto(String coctacto) {
-        this.coctacto = coctacto;
+    public void setContacto(String coctacto) {
+        this.contacto = coctacto;
     }
 
     public Integer getFrecuenciaVisitas() {
@@ -68,7 +68,7 @@ public class Proveedor {
 
     @Override
     public String toString() {
-        return "Proveedor{" + "id=" + id + ", nombre=" + nombre + ", nit=" + nit + ", coctacto=" + coctacto + ", frecuenciaVisitas=" + frecuenciaVisitas + '}';
+        return "Proveedor{" + "id=" + id + ", nombre=" + nombre + ", nit=" + nit + ", coctacto=" + contacto + ", frecuenciaVisitas=" + frecuenciaVisitas + '}';
     }
     
     

@@ -3,19 +3,17 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.carmotors.modelDAO;
-
 import com.carmotors.model.Repuesto;
 import com.carmotors.util.Conexion;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Date; // Este es java.sql.Date
-
+import java.sql.Date;
 /**
  *
  * @author ANDRES
  */
-public class RepuestoDAO implements RepuestoDAOInterface {
+public class RepuestoDAO implements CrudDAO<Repuesto> {
     private Connection con;
 
     public RepuestoDAO() {
@@ -23,7 +21,7 @@ public class RepuestoDAO implements RepuestoDAOInterface {
     }
 
     @Override
-    public void agregarRepuesto(Repuesto repuesto) {
+    public void agregar(Repuesto repuesto) {
         String sql = "insert into repuesto (nombre_repuesto, tipo_repuesto, marca, modelo_compatible, vida_util_estimada) values (?,?,?,?,?)";
 
         try(PreparedStatement pstmt = con.prepareStatement(sql)) {
@@ -31,18 +29,19 @@ public class RepuestoDAO implements RepuestoDAOInterface {
             pstmt.setString(2, repuesto.getTipo());
             pstmt.setString(3, repuesto.getMarca());
             pstmt.setString(4, repuesto.getModeloCompatible());
-            
-            // Conversión CORRECTA de java.util.Date a java.sql.Date
+
             if(repuesto.getVidaUtilEstimada() != null) {
                 pstmt.setDate(5, new Date(repuesto.getVidaUtilEstimada().getTime()));
             } else {
-                pstmt.setNull(5, java.sql.Types.DATE); // Manejo de valores nulos
+                pstmt.setNull(5, java.sql.Types.DATE);
             }
-            
-            pstmt.executeUpdate(); // ¡Faltaba esta línea para ejecutar el INSERT!
-            
+
+            pstmt.executeUpdate();
+
         } catch (SQLException e) {
             System.err.println("Error al agregar el repuesto: " + repuesto + "\n" + e.getMessage());
         }
     }
+
+
 }
