@@ -23,8 +23,6 @@ public class ProyectoJAVA_CarMotors_AndersonAndresAda {
         SwingUtilities.invokeLater(() -> {
 
             RepuestoDAO dao = new RepuestoDAO();
-            ProveedorDAO pdao = new ProveedorDAO();
-            
             VentanaPrincipal vista = new VentanaPrincipal(dao, pdao);
             vista.setVisible(true);
         });
