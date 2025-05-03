@@ -19,11 +19,20 @@ public class ProveedorController {
     private void guardarProveedor() {
         try {
             Proveedor proveedor = vista.getDatosFormulario();
-            proveedorDAO.agregar(proveedor);
-            JOptionPane.showMessageDialog(vista, "Proveedor guardado correctamente");
-            vista.limpiarFormulario();
+            boolean exito = proveedorDAO.agregar(proveedor);  // Capturamos el boolean de retorno
+
+            if (exito) {
+                JOptionPane.showMessageDialog(vista, "Proveedor guardado correctamente",
+                        "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                vista.limpiarFormulario();
+            } else {
+                JOptionPane.showMessageDialog(vista, "No se pudo guardar el proveedor",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(vista, "Error al guardar: " + e.getMessage());
+            JOptionPane.showMessageDialog(vista, "Error al guardar: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 

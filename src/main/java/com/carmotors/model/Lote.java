@@ -4,6 +4,8 @@
  */
 package com.carmotors.model;
 
+import com.carmotors.model.enums.EstadoLote;
+
 import java.util.Date;
 
 /**
@@ -11,23 +13,24 @@ import java.util.Date;
  * @author ANDRES
  */
 public class Lote {
-    
+
     private Integer id;
-    private Repuesto repuesto;
-    private Proveedor proveedor;
+    private Integer Idrepuesto;
+    private Integer Idproveedor;
     private Date FechaIngreso;
     private Integer cantidadInicial;
     private Integer cantidadDisponible;
-    private EstadoLote estado;  
+    private EstadoLote estado;
+
 
     public Lote() {
     }
 
-    public Lote(Integer id, Repuesto repuesto, Proveedor proveedor, Date FechaIngreso, Integer cantidadInicial, Integer cantidadDisponible, EstadoLote estado) {
+    public Lote(Integer id, Integer idrepuesto, Integer idproveedor, Date fechaIngreso, Integer cantidadInicial, Integer cantidadDisponible, EstadoLote estado) {
         this.id = id;
-        this.repuesto = repuesto;
-        this.proveedor = proveedor;
-        this.FechaIngreso = FechaIngreso;
+        this.Idrepuesto = idrepuesto;
+        this.Idproveedor = idproveedor;
+        this.FechaIngreso = fechaIngreso;
         this.cantidadInicial = cantidadInicial;
         this.cantidadDisponible = cantidadDisponible;
         this.estado = estado;
@@ -41,28 +44,28 @@ public class Lote {
         this.id = id;
     }
 
-    public Repuesto getRepuesto() {
-        return repuesto;
+    public Integer getIdrepuesto() {
+        return Idrepuesto;
     }
 
-    public void setRepuesto(Repuesto repuesto) {
-        this.repuesto = repuesto;
+    public void setIdrepuesto(Integer idrepuesto) {
+        Idrepuesto = idrepuesto;
     }
 
-    public Proveedor getProveedor() {
-        return proveedor;
+    public Integer getIdproveedor() {
+        return Idproveedor;
     }
 
-    public void setProveedor(Proveedor proveedor) {
-        this.proveedor = proveedor;
+    public void setIdproveedor(Integer idproveedor) {
+        Idproveedor = idproveedor;
     }
 
     public Date getFechaIngreso() {
         return FechaIngreso;
     }
 
-    public void setFechaIngreso(Date FechaIngreso) {
-        this.FechaIngreso = FechaIngreso;
+    public void setFechaIngreso(Date fechaIngreso) {
+        FechaIngreso = fechaIngreso;
     }
 
     public Integer getCantidadInicial() {
@@ -91,8 +94,15 @@ public class Lote {
 
     @Override
     public String toString() {
-        return "Lote{" + "id=" + id + ", repuesto=" + repuesto + ", proveedor=" + proveedor + ", FechaIngreso=" + FechaIngreso + ", cantidadInicial=" + cantidadInicial + ", cantidadDisponible=" + cantidadDisponible + ", estado=" + estado + '}';
+        return "Lote{" +
+                "id=" + id +
+                ", Idrepuesto=" + Idrepuesto +
+                ", Idproveedor=" + Idproveedor +
+                ", FechaIngreso=" + FechaIngreso +
+                ", cantidadInicial=" + cantidadInicial +
+                ", cantidadDisponible=" + cantidadDisponible +
+                ", estado=" + estado +
+                '}';
     }
-      
-    
 }
+

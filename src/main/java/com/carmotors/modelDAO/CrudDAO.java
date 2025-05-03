@@ -13,6 +13,6 @@ import com.carmotors.model.Repuesto;
  */
 public interface CrudDAO<T> {
 
-     void agregar(T entidad);
+     boolean agregar(T entidad);
 
 }

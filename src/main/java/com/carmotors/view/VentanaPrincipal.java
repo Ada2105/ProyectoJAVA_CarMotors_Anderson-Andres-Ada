@@ -12,8 +12,13 @@ package com.carmotors.view;
 
 import javax.swing.*;
 import java.awt.*;
+
+import com.carmotors.controller.ClienteController;
+import com.carmotors.controller.LoteController;
 import com.carmotors.controller.RepuestoController;
 import com.carmotors.controller.ProveedorController;
+import com.carmotors.modelDAO.ClienteDAO;
+import com.carmotors.modelDAO.LoteDAO;
 import com.carmotors.modelDAO.ProveedorDAO;
 import com.carmotors.modelDAO.RepuestoDAO;
 
@@ -23,9 +28,10 @@ public class VentanaPrincipal extends JFrame {
     private JPanel panelIzquierdo;
     private PanelRepuesto panelRepuesto;
     private PanelProveedor panelProveedor;
+    private PanelCliente panelCliente;
     private final int MIN_MENU_WIDTH = 250;
 
-    public VentanaPrincipal(RepuestoDAO repuestoDAO, ProveedorDAO proveedorDAO) {
+    public VentanaPrincipal(RepuestoDAO repuestoDAO, ProveedorDAO proveedorDAO, ClienteDAO clienteDAO, LoteDAO loteDAO) {
         setTitle("Sistema de Gestión de Repuestos y Proveedores");
         setSize(1200, 700);
         setMinimumSize(new Dimension(800, 500));
@@ -33,7 +39,7 @@ public class VentanaPrincipal extends JFrame {
         setLayout(new BorderLayout());
 
         initComponents();
-        initControllers(repuestoDAO, proveedorDAO);
+        initControllers(repuestoDAO, proveedorDAO, clienteDAO, loteDAO);
     }
 
     private void initComponents() {
@@ -47,9 +53,11 @@ public class VentanaPrincipal extends JFrame {
 
         panelRepuesto = new PanelRepuesto();
         panelProveedor = new PanelProveedor();
+        panelCliente = new PanelCliente();
 
         panelDerecho.add(panelRepuesto, "Repuestos");
         panelDerecho.add(panelProveedor, "Proveedores");
+        panelDerecho.add(panelCliente, "Clientes");
 
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panelIzquierdo, panelDerecho);
         splitPane.setDividerSize(5);
@@ -59,30 +67,39 @@ public class VentanaPrincipal extends JFrame {
         crearBotonesMenu();
     }
 
-    private void initControllers(RepuestoDAO repuestoDAO, ProveedorDAO proveedorDAO) {
-        new RepuestoController(panelRepuesto, repuestoDAO);
-        new ProveedorController(panelProveedor, proveedorDAO);
+    private void initControllers(RepuestoDAO repuestoDao, ProveedorDAO proveedorDao, ClienteDAO clienteDao, LoteDAO loteDao) {
+        new RepuestoController(panelRepuesto, repuestoDao);
+        new ProveedorController(panelProveedor, proveedorDao);
+        new ClienteController(panelCliente, clienteDao );
+        new LoteController(panelRepuesto, loteDao);
     }
 
     private void crearBotonesMenu() {
-        JButton btnRepuestos = new JButton("Repuestos");
-        JButton btnProveedores = new JButton("Proveedores");
+        JButton btnRepuestos = new JButton("Gestion de Inventario");
+        JButton btnProveedores = new JButton("Proveedores y Compras");
+        JButton btnClientes = new JButton("Clientes y Facturacion");
 
         btnRepuestos.setForeground(Color.WHITE);
         btnProveedores.setForeground(Color.WHITE);
+        btnClientes.setForeground(Color.WHITE);
 
         btnRepuestos.setBackground(new Color(25, 20, 20));
         btnProveedores.setBackground(new Color(25, 20, 20));
+        btnClientes.setBackground(new Color(25, 20, 20));
 
         btnRepuestos.setBorderPainted(false);
         btnProveedores.setBorderPainted(false);
+        btnClientes.setBorderPainted(false);
 
         btnRepuestos.addActionListener(e -> cardLayout.show(panelDerecho, "Repuestos"));
         btnProveedores.addActionListener(e -> cardLayout.show(panelDerecho, "Proveedores"));
+        btnClientes.addActionListener(e -> cardLayout.show(panelDerecho, "Clientes"));
 
         panelIzquierdo.add(btnRepuestos);
         panelIzquierdo.add(Box.createRigidArea(new Dimension(0, 10)));
         panelIzquierdo.add(btnProveedores);
+        panelIzquierdo.add(Box.createRigidArea(new Dimension(0, 10)));
+        panelIzquierdo.add(btnClientes);
         panelIzquierdo.add(Box.createRigidArea(new Dimension(0, 10)));
     }
 }
