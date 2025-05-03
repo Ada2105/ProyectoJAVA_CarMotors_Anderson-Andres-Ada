@@ -18,9 +18,15 @@ public class RepuestoController {
     private void guardarRepuesto() {
         try {
             Repuesto repuesto = vista.getDatosFormulario();
-            repuestoDAO.agregar(repuesto);
-            JOptionPane.showMessageDialog(vista, "Repuesto guardado correctamente");
-            vista.limpiarFormulario();
+            boolean guardadoExitoso = repuestoDAO.agregar(repuesto);
+
+            if(guardadoExitoso) {
+                JOptionPane.showMessageDialog(vista, "Repuesto guardado correctamente");
+                vista.limpiarFormulario();
+            } else {
+                JOptionPane.showMessageDialog(vista, "No se pudo guardar el repuesto");
+            }
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(vista, "Error al guardar: " + e.getMessage());
         }

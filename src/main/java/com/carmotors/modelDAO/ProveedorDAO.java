@@ -16,19 +16,20 @@ public class ProveedorDAO implements CrudDAO<Proveedor> {
     }
 
     @Override
-    public void agregar(Proveedor proveedor) {
+    public boolean agregar(Proveedor proveedor) {
+        String sql = "insert into proveedor (nombre, NIT, contacto, frecuencia_visitas) values (?,?,?,?)";
 
-            String sql = "insert into proveedor (nombre, NIT, contacto, frecuencia_visitas) values (?,?,?,?)";
+        try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+            pstmt.setString(1, proveedor.getNombre());
+            pstmt.setString(2, proveedor.getNit());
+            pstmt.setString(3, proveedor.getContacto());
+            pstmt.setInt(4, proveedor.getFrecuenciaVisitas());
+            pstmt.executeUpdate();
+            return true;  // ← Única línea añadida (retorno exitoso)
 
-            try (PreparedStatement pstmt = con.prepareStatement(sql)) {
-                pstmt.setString(1, proveedor.getNombre());
-                pstmt.setString(2, proveedor.getNit());
-                pstmt.setString(3, proveedor.getContacto());
-                pstmt.setInt(4, proveedor.getFrecuenciaVisitas());
-                pstmt.executeUpdate();
-
-            } catch (SQLException e) {
-                System.err.println("Error al agregar el proveedor: " + proveedor + "\n" + e.getMessage());
-            }
+        } catch (SQLException e) {
+            System.err.println("Error al agregar el proveedor: " + proveedor + "\n" + e.getMessage());
+            return false; // ← Única línea añadida (retorno fallido)
         }
+    }
 }
