@@ -1,8 +1,0 @@
-com\carmotors\model\Lote.class
-com\carmotors\controller\RepuestoController.class
-com\carmotors\modelDAO\RepuestoDAO.class
-com\carmotors\run\ProyectoJAVA_CarMotors_AndersonAndresAda.class
-com\carmotors\view\VentanaPrincipal.class
-com\carmotors\util\Conexion.class
-com\carmotors\model\Repuesto.class
-com\carmotors\model\Proveedor.class
