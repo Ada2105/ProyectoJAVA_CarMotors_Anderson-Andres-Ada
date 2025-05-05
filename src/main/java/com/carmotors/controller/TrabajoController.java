@@ -17,6 +17,7 @@ public class TrabajoController {
     private final TrabajoDAO trabajoDAO;
     private final VehiculoDAO vehiculoDAO;
     private final ServicioDAO servicioDAO;
+        
 
     public TrabajoController(PanelTrabajo vista, TrabajoDAO trabajoDAO,
                              VehiculoDAO vehiculoDAO, ServicioDAO servicioDAO) {
@@ -56,8 +57,8 @@ public class TrabajoController {
 
             // Crear objeto trabajo
             Trabajo trabajo = new Trabajo();
-            trabajo.setIdVehiculo(vista.getVehiculoSeleccionado().getId());
-            trabajo.setIdServicio(vista.getServicioSeleccionado().getIdServicio());
+            trabajo.setVehiculo(vista.getVehiculoSeleccionado());
+            trabajo.setServicio(vista.getServicioSeleccionado());
             trabajo.setFechaRecepcion(LocalDate.now());
 
             // Manejo opcional de fecha de entrega
