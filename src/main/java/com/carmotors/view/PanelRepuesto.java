@@ -215,7 +215,6 @@ public class PanelRepuesto extends JPanel {
         addFormRow(formSuperior, gbc, 2, "Marca:", txtMarca = createStyledTextField(15));
         addFormRow(formSuperior, gbc, 3, "Modelo Compatible:", txtModelo = createStyledTextField(15));
         addFormRow(formSuperior, gbc, 4, "Precio:", txtPrecio = createStyledTextField(15));
-        addFormRow(formSuperior, gbc, 4, "Precio:", txtPrecio = createStyledTextField(15));
 
         UtilDateModel model = new UtilDateModel();
         Properties p = new Properties();
@@ -445,7 +444,13 @@ public class PanelRepuesto extends JPanel {
         r.setNombre(txtNombre.getText());
 
         String tipoStr = (String) txtTipo.getSelectedItem();
-        TipoRepuesto tipoRepuesto = TipoRepuesto.valueOf(tipoStr);
+        TipoRepuesto tipoRepuesto = null; // Inicializar a null para manejar errores
+        try {
+            tipoRepuesto = TipoRepuesto.valueOf(tipoStr);
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(this, "Por favor seleccione un tipo de repuesto válido", "Error", JOptionPane.ERROR_MESSAGE);
+            return null; // Indica que la obtención de datos falló
+        }
         r.setTipo(tipoRepuesto);
 
         r.setMarca(txtMarca.getText());
@@ -456,10 +461,10 @@ public class PanelRepuesto extends JPanel {
             r.setPrecio(Double.parseDouble(txtPrecio.getText()));
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Por favor ingrese un precio válido", "Error", JOptionPane.ERROR_MESSAGE);
-            throw e;
+            return null; // Indica que la obtención de datos falló
         }
 
-        // Usa datePickerVidaUtil en lugar de datePicker
+        // Manejo del datePickerVidaUtil
         if (datePickerVidaUtil.getModel().isSelected()) {
             LocalDate localDate = LocalDate.of(
                     datePickerVidaUtil.getModel().getYear(),
