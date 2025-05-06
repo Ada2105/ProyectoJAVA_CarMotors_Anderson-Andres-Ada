@@ -62,7 +62,7 @@ public class EvaluacionProveedor {
         return calidadProductos;
     }
 
-    public void setCalidadProductos(Integer calidadProductos) {
+    public void calidad_producto(Integer calidadProductos) {
         this.calidadProductos = calidadProductos;
     }
 
@@ -93,5 +93,10 @@ public class EvaluacionProveedor {
                 ", costo=" + costo +
                 ", observaciones='" + observaciones + '\'' +
                 '}';
+    }
+
+    public void setCalidadProductos(int int1) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setCalidadProductos'");
     }
 }

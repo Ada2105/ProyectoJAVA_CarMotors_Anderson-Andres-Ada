@@ -1,20 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.carmotors.view;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
-
 import java.util.Objects;
+
 import com.carmotors.controller.*;
 import com.carmotors.model.Cliente;
-import com.carmotors.model.DetalleTrabajoRepuesto;
-
-
-import com.carmotors.controller.*;
-
 import com.carmotors.model.Proveedor;
 import com.carmotors.modelDAO.*;
 
@@ -28,18 +20,16 @@ public class VentanaPrincipal extends JFrame {
     private PanelVehiculo panelVehiculo;
     private PanelServicio panelServicio;
     private PanelTrabajo panelTrabajo;
-    private PanelDetalleTrabajoRepuesto panelDetalleTrabajo; // Nuevo panel agregado
-
+    private PanelDetalleTrabajoRepuesto panelDetalleTrabajo;
     private Runnable actualizarCallback;
     private ClienteController clienteController;
     private ProveedorController proveedorController;
-
     private PanelActividadEspecial panelActividadEspecial;
-
-    private PanelClienteActividad panelClienteActividad;
-
+    private PanelFactura panelFactura;
     private PanelEvaluacionProveedor panelEvaluacionProveedor;
-    private final int MIN_MENU_WIDTH = 250;
+    private PanelGestionProveedores panelGestionProveedores;
+
+    private final int MIN_MENU_WIDTH = 220; // Ancho ligeramente menor para un aspecto más compacto
 
     public VentanaPrincipal(RepuestoDAO repuestoDAO, ProveedorDAO proveedorDAO,
                             ClienteDAO clienteDAO, LoteDAO loteDAO,
@@ -47,32 +37,32 @@ public class VentanaPrincipal extends JFrame {
                             ServicioDAO servicioDAO, TrabajoDAO trabajoDAO,
                             DetalleTrabajoRepuestoDAO detalleTrabajoDAO,
                             ActividadEspecialDAO actividadEspecialDAO, ClienteActividadDAO clienteActividadDAO,
-                            EvaluacionProveedorDAO evaluacionProveedorDAO) { // Nuevo DAO agregado
-
-        setTitle("Sistema de Gestión de Repuestos y Proveedores");
+                            EvaluacionProveedorDAO evaluacionProveedorDAO, FacturaDAO facturaDA) {
+        setTitle("Sistema de Gestión Carmotors");
         setSize(1200, 700);
-        setMinimumSize(new Dimension(800, 500));
+        setMinimumSize(new Dimension(900, 600)); // Aumentar mínimo para mejor visualización
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
+        getContentPane().setBackground(new Color(238, 238, 238)); // Fondo general claro
 
         initComponents();
-
         initControllers(repuestoDAO, proveedorDAO, clienteDAO, loteDAO,
                 vehiculoDAO, actualizarCallback, servicioDAO,
                 trabajoDAO, detalleTrabajoDAO,
                 actividadEspecialDAO, clienteActividadDAO,
-                evaluacionProveedorDAO);
-
+                evaluacionProveedorDAO, facturaDA);
     }
 
     private void initComponents() {
         panelIzquierdo = new JPanel();
         panelIzquierdo.setLayout(new BoxLayout(panelIzquierdo, BoxLayout.Y_AXIS));
-        panelIzquierdo.setBackground(new Color(25, 20, 20));
+        panelIzquierdo.setBackground(new Color(54, 57, 63)); // Gris oscuro azulado (Discord)
+        panelIzquierdo.setBorder(new EmptyBorder(10, 10, 10, 10)); // Margen para el menú
 
         cardLayout = new CardLayout();
         panelDerecho = new JPanel(cardLayout);
-        panelDerecho.setBackground(new Color(40, 35, 35));
+        panelDerecho.setBackground(new Color(245, 245, 245)); // Gris claro para el contenido
+        panelDerecho.setBorder(new EmptyBorder(10, 10, 10, 10)); // Margen para el contenido
 
         // Inicialización de todos los paneles
         panelRepuesto = new PanelRepuesto();
@@ -81,28 +71,28 @@ public class VentanaPrincipal extends JFrame {
         panelVehiculo = new PanelVehiculo();
         panelServicio = new PanelServicio();
         panelTrabajo = new PanelTrabajo();
-        panelDetalleTrabajo = new PanelDetalleTrabajoRepuesto(); // Nuevo panel inicializado
+        panelDetalleTrabajo = new PanelDetalleTrabajoRepuesto();
         panelActividadEspecial = new PanelActividadEspecial();
-        panelClienteActividad = new PanelClienteActividad();
         panelEvaluacionProveedor = new PanelEvaluacionProveedor();
-
+        panelGestionProveedores = new PanelGestionProveedores();
+        panelFactura = new PanelFactura();
 
         // Agregar paneles al cardLayout
         panelDerecho.add(panelRepuesto, "Repuestos");
-        panelDerecho.add(panelProveedor, "Proveedores");
+        panelDerecho.add(panelGestionProveedores, "GestionProveedores");
         panelDerecho.add(panelCliente, "Clientes");
         panelDerecho.add(panelVehiculo, "Vehiculo");
         panelDerecho.add(panelServicio, "Servicios");
         panelDerecho.add(panelTrabajo, "Trabajos");
-        panelDerecho.add(panelDetalleTrabajo, "DetallesTrabajo"); // Nuevo panel agregado
+        panelDerecho.add(panelDetalleTrabajo, "DetallesTrabajo");
         panelDerecho.add(panelActividadEspecial, "Actividades Especiales");
-        panelDerecho.add(panelClienteActividad, "Cliente Actividad");
         panelDerecho.add(panelEvaluacionProveedor, "Evaluacion Proveedor");
-
+        panelDerecho.add(panelFactura, "Factura");
 
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panelIzquierdo, panelDerecho);
-        splitPane.setDividerSize(5);
+        splitPane.setDividerSize(8);
         splitPane.setDividerLocation(MIN_MENU_WIDTH);
+        splitPane.setResizeWeight(0.0); // Evitar que el menú crezca demasiado
         add(splitPane);
 
         crearBotonesMenu();
@@ -114,103 +104,71 @@ public class VentanaPrincipal extends JFrame {
                                  ServicioDAO servicioDAO, TrabajoDAO trabajoDAO,
                                  DetalleTrabajoRepuestoDAO detalleTrabajoDAO,
                                  ActividadEspecialDAO actividadEspecialDAO, ClienteActividadDAO clienteActividadDAO,
-                                 EvaluacionProveedorDAO evaluacionProveedorDAO
-                                 ) { // Nuevo parámetro
-
+                                 EvaluacionProveedorDAO evaluacionProveedorDAO, FacturaDAO facturaDAO) {
 
         new RepuestoController(panelRepuesto, repuestoDao);
-        new ProveedorController(panelProveedor, proveedorDao);
+        new ProveedorController(panelGestionProveedores, proveedorDao);
         this.clienteController = new ClienteController(panelCliente, clienteDao, actualizarCallback);
         new LoteController(panelRepuesto, loteDao);
         new VehiculoController(panelVehiculo, vehiculoDAO, clienteDao);
         new ServicioController(panelServicio, servicioDAO);
         new TrabajoController(panelTrabajo, trabajoDAO, vehiculoDAO, servicioDAO);
-
-        // Nuevo controlador para el panel de detalles
         new DetalleTrabajoRepuestoController(panelDetalleTrabajo, detalleTrabajoDAO, loteDao, trabajoDAO);
         new ActividadEspecialController(panelActividadEspecial, actividadEspecialDAO);
-        new ClienteActividadController(panelClienteActividad, clienteActividadDAO);
-        new EvaluacionProveedorController(panelEvaluacionProveedor, evaluacionProveedorDAO, proveedorDao);
+        new EvaluacionProveedorController(panelGestionProveedores, evaluacionProveedorDAO, proveedorDao);
+
+        FacturaController facturaController = new FacturaController(
+                panelFactura,
+                facturaDAO,
+                clienteDao,
+                trabajoDAO,
+                vehiculoDAO);
+        panelFactura.setFacturaController(facturaController);
     }
 
     private void crearBotonesMenu() {
-        JButton btnRepuestos = crearBotonMenu("Gestión de Inventario", "Repuestos");
-        JButton btnProveedores = crearBotonMenu("Proveedores y Compras", "Proveedores");
-        JButton btnClientes = crearBotonMenu("Clientes y Facturación", "Clientes");
-        JButton btnVehiculo = crearBotonMenu("Gestión Vehículo", "Vehiculo");
-        JButton btnServicios = crearBotonMenu("Servicios", "Servicios");
-        JButton btnTrabajos = crearBotonMenu("Trabajos", "Trabajos");
-        JButton btnEvaluacion = crearBotonMenu("Evaluacion Proveedor", "Evaluacion Proveedor");
+        crearBotonMenu("Gestión de Inventario", "Repuestos");
+        crearBotonMenu("Gestión de Proveedores", "GestionProveedores");
+        crearBotonMenu("Clientes", "Clientes");
+        crearBotonMenu("Gestión Vehículo", "Vehiculo");
+        crearBotonMenu("Servicios", "Servicios");
+        crearBotonMenu("Trabajos", "Trabajos");
+        crearBotonMenu("Factura", "Factura");
+        crearBotonMenu("Detalles Trabajo", "DetallesTrabajo");
+        crearBotonMenu("Actividades Especiales", "Actividades Especiales");
+        // crearBotonMenu("Cliente Actividad", "Cliente Actividad"); // Comentado o eliminado si no hay panel
+        crearBotonMenu("Evaluación Proveedor", "Evaluacion Proveedor");
 
-        // Nuevo botón para detalles de trabajo
-        JButton btnDetallesTrabajo = crearBotonMenu("Detalles Trabajo", "DetallesTrabajo");
-        JButton btnActividades = new JButton("Actividades Especiales");
-        JButton btnClienteActividad= new JButton("Cliente Actividad");
-
-
-        btnRepuestos.setForeground(Color.WHITE);
-        btnProveedores.setForeground(Color.WHITE);
-        btnClientes.setForeground(Color.WHITE);
-        btnActividades.setForeground(Color.WHITE);
-        btnClienteActividad.setBackground(Color.WHITE);
-        btnEvaluacion.setBackground(Color.WHITE);
-
-        btnRepuestos.setBackground(new Color(25, 20, 20));
-        btnProveedores.setBackground(new Color(25, 20, 20));
-        btnClientes.setBackground(new Color(25, 20, 20));
-        btnActividades.setBackground(new Color(25, 20, 20));
-        btnClienteActividad.setBackground(new Color(25, 20, 20));
-        btnEvaluacion.setBackground(new Color(25, 20, 20));
-
-        btnRepuestos.setBorderPainted(false);
-        btnProveedores.setBorderPainted(false);
-        btnClientes.setBorderPainted(false);
-        btnActividades.setBorderPainted(false);
-        btnClienteActividad.setBorderPainted(false);
-        btnEvaluacion.setBorderPainted(false);
-
-
-        btnRepuestos.addActionListener(e -> cardLayout.show(panelDerecho, "Repuestos"));
-        btnProveedores.addActionListener(e -> cardLayout.show(panelDerecho, "Proveedores"));
-        btnClientes.addActionListener(e -> cardLayout.show(panelDerecho, "Clientes"));
-        btnActividades.addActionListener(e -> cardLayout.show(panelDerecho, "Actividades Especiales"));
-        btnClienteActividad.addActionListener(e -> cardLayout.show(panelDerecho, "Cliente Actividad"));
-        btnEvaluacion.addActionListener(e -> cardLayout.show(panelDerecho, "Evaluacion Proveedor"));
-
-
-        panelIzquierdo.add(btnRepuestos);
-        panelIzquierdo.add(Box.createRigidArea(new Dimension(0, 10)));
-        panelIzquierdo.add(btnProveedores);
-        panelIzquierdo.add(Box.createRigidArea(new Dimension(0, 10)));
-        panelIzquierdo.add(btnClientes);
-        panelIzquierdo.add(Box.createRigidArea(new Dimension(0, 10)));
-        panelIzquierdo.add(btnVehiculo);
-        panelIzquierdo.add(Box.createRigidArea(new Dimension(0, 10)));
-        panelIzquierdo.add(btnServicios);
-        panelIzquierdo.add(Box.createRigidArea(new Dimension(0, 10)));
-        panelIzquierdo.add(btnTrabajos);
-        panelIzquierdo.add(Box.createRigidArea(new Dimension(0, 10)));
-        panelIzquierdo.add(btnDetallesTrabajo);
-        panelIzquierdo.add(btnActividades);
-        panelIzquierdo.add(Box.createRigidArea(new Dimension(0, 10)));
-        panelIzquierdo.add(btnClienteActividad);
-        panelIzquierdo.add(Box.createRigidArea(new Dimension(0, 10)));
-        panelIzquierdo.add(btnEvaluacion);
-        panelIzquierdo.add(Box.createRigidArea(new Dimension(0, 10)));// Nuevo botón agregado
+        // Añadir un espaciador vertical para empujar los botones hacia arriba
+        panelIzquierdo.add(Box.createVerticalGlue());
     }
 
-    private JButton crearBotonMenu(String texto, String comando) {
+    private void crearBotonMenu(String texto, String comando) {
         JButton boton = new JButton(texto);
         boton.setForeground(Color.WHITE);
-        boton.setBackground(new Color(25, 20, 20));
+        boton.setBackground(new Color(70, 71, 74)); // Gris más claro para los botones
         boton.setBorderPainted(false);
+        boton.setFocusPainted(false);
         boton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        boton.setMaximumSize(new Dimension(Integer.MAX_VALUE, boton.getMinimumSize().height));
+        boton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40)); // Altura fija para los botones
+        boton.setMinimumSize(new Dimension(MIN_MENU_WIDTH - 20, 40)); // Ancho mínimo
+        boton.setPreferredSize(new Dimension(MIN_MENU_WIDTH - 20, 40));
+        boton.setBorder(new EmptyBorder(5, 15, 5, 15)); // Margen interno
+        boton.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        boton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                boton.setBackground(new Color(114, 137, 218)); // Azul al pasar el ratón (Discord blue)
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                boton.setBackground(new Color(70, 71, 74));
+            }
+        });
         boton.addActionListener(e -> cardLayout.show(panelDerecho, comando));
-        return boton;
+        panelIzquierdo.add(boton);
+        panelIzquierdo.add(Box.createRigidArea(new Dimension(0, 5))); // Espacio entre botones
     }
 
-    // Resto de métodos existentes (actualizarListaClientes, setActualizarCallback, etc.)
     public void actualizarListaClientes(java.util.List<Cliente> clientes) {
         if (panelVehiculo != null) {
             panelVehiculo.cargarClientes(clientes);
