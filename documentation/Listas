@@ -1,0 +1,66 @@
+----- Lista de Tablas de Base de Datos por Componente -----
+El Diagrama ER incluye las siguientes tablas:
+Cliente, Vehiculo, Cliente_Actividad, Actividad_Especial, Servicio, Trabajo, Detalle_Trabajo_Repuesto, Lote, Repuesto, Proveedor, Evaluacion_Proveedor, Orden_Compra, Detalle_Orden_Compra, Factura, y Detalle_Factura.
+
+Componente ---------- Tablas Utilizadas
+Gestión de Inventarios -----> Repuesto, Lote, Proveedor, Detalle_Trabajo_Repuesto, Orden_Compra, Detalle_Orden_Compra
+Gestión de Servicios -----> Servicio, Trabajo, Vehiculo, Detalle_Trabajo_Repuesto
+Gestión de Clientes -----> Cliente, Cliente_Actividad, Servicio, Vehiculo
+Facturación Electrónica -----> Factura, Detalle_Factura, Cliente, Servicio, Trabajo, Repuesto, Detalle_Trabajo_Repuesto
+Gestión de Proveedores -----> Proveedor, Evaluacion_Proveedor, Repuesto, Lote, Orden_Compra, Detalle_Orden_Compra
+Actividades Especiales -----> Actividad_Especial, Cliente, Cliente_Actividad
+
+Justificación y Notas:
+    Gestión de Inventarios:
+        Repuesto y Lote para el registro y trazabilidad de repuestos.
+        Proveedor para asociar repuestos a proveedores.
+        Detalle_Trabajo_Repuesto para registrar el uso de repuestos en trabajos.
+        Orden_Compra y Detalle_Orden_Compra para el control de reabastecimiento.
+    Gestión de Servicios:
+        Servicio y Trabajo para registrar servicios y trabajos realizados.
+        Vehiculo para los datos de los vehículos atendidos.
+        Detalle_Trabajo_Repuesto para detallar repuestos utilizados.
+    Gestión de Clientes:
+        Cliente para datos de clientes.
+        Cliente_Actividad para actividades relacionadas con clientes.
+        Servicio para el historial de servicios.
+        Vehiculo para asociar vehículos a clientes.
+    Facturación Electrónica:
+        Factura y Detalle_Factura para generar facturas.
+        Cliente para información del cliente.
+        Servicio, Trabajo, Repuesto y Detalle_Trabajo_Repuesto para los detalles de facturación.
+    Gestión de Proveedores:
+        Proveedor y Evaluacion_Proveedor para registro y evaluación.
+        Repuesto y Lote para productos suministrados.
+        Orden_Compra y Detalle_Orden_Compra para pedidos.
+    Actividades Especiales:
+        Actividad_Especial para campañas e inspecciones.
+        Cliente y Cliente_Actividad para relacionar actividades con clientes.
+
+----- Lista de Clases por Componente -----
+Componente -----------	Clases Utilizadas
+Gestión de Inventarios -----> Repuesto, Lote, Proveedor, DetalleTrabajoRepuesto, OrdenCompra, DetalleOrdenCompra, RepuestoController, LoteController, ProveedorController, RepuestoDAO, LoteDAO, ProveedorDAO, OrdenCompraDAO, DetalleOrdenCompraDAO, PanelRepuesto, PanelProveedor
+Gestión de Servicios -----> Servicio, Trabajo, Vehiculo, DetalleTrabajoRepuesto, ServicioController, TrabajoController, VehiculoController, ServicioDAO, TrabajoDAO, VehiculoDAO, PanelServicio, PanelTrabajo, PanelVehiculo
+Gestión de Clientes -----> Cliente, ClienteActivida, Servicio, Vehiculo, ClienteController, ClienteActividaController, ClienteDAO, ClienteActividaDAO, PanelCliente, PanelClienteActivida
+Facturación Electrónica -----> Factura, DetalleFactura, Cliente, Servicio, Trabajo, Repuesto, DetalleTrabajoRepuesto, ClienteController, ServicioController, FacturaController, FacturaDAO, DetalleFacturaDAO, DateLabelFormatter, VentanaPrincipal
+Gestión de Proveedores -----> Proveedor, EvaluacionProveedor, Repuesto, Lote, OrdenCompra, DetalleOrdenCompra, ProveedorController, ProveedorDAO, EvaluacionProveedorDAO, OrdenCompraDAO, DetalleOrdenCompraDAO, PanelProveedor
+Actividades Especiales -----> ActividadEspecial, Cliente, ClienteActivida, ActividadEspecialController, ActividadEspecialDAO, PanelActividaEspecial
+
+Justificación y Notas:
+    Gestión de Inventarios:
+        Incluye clases para Orden_Compra y Detalle_Orden_Compra, inferidas para el control de reabastecimiento.
+        Clases de controlador y DAO correspondientes a las nuevas tablas.
+    Gestión de Servicios:
+        Sin cambios, ya que las tablas (Servicio, Trabajo, Vehiculo) coinciden con las clases existentes.
+    Gestión de Clientes:
+        Agrega Vehiculo como clase usada, ya que los clientes tienen vehículos asociados.
+    Facturación Electrónica:
+        Nuevas clases Factura, Detalle_Factura, FacturaController, FacturaDAO, DetalleFacturaDAO inferidas para la generación de facturas.
+        DateLabelFormatter y VentanaPrincipal para la interfaz de facturación.
+    Gestión de Proveedores:
+        Incluye Evaluacion_Proveedor, Orden_Compra, y Detalle_Orden_Compra con sus respectivos controladores y DAOs.
+    Actividades Especiales:
+        Sin cambios, ya que las tablas (Actividad_Especial, Cliente_Actividad) coinciden con las clases existentes.
+    Clases Transversales:
+        Conexion.java (en util) no se incluye en las listas, pero es usada por todos los DAOs.
+        CrudDAO.java podría ser una clase base para otros DAOs, pero no se asigna a un componente específico.
