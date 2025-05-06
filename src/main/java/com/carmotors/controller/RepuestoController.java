@@ -16,20 +16,25 @@ public class RepuestoController {
     }
 
     private void guardarRepuesto() {
-        try {
-            Repuesto repuesto = vista.getDatosFormulario();
-            boolean guardadoExitoso = repuestoDAO.agregar(repuesto);
+        Repuesto repuesto = vista.getDatosFormulario();
+        if (repuesto != null) { // Verifica si se obtuvieron los datos correctamente
+            try {
+                boolean guardadoExitoso = repuestoDAO.agregar(repuesto);
 
-            if(guardadoExitoso) {
-                JOptionPane.showMessageDialog(vista, "Repuesto guardado correctamente");
-                vista.limpiarFormulario();
-            } else {
-                JOptionPane.showMessageDialog(vista, "No se pudo guardar el repuesto");
+                if (guardadoExitoso) {
+                    JOptionPane.showMessageDialog(vista, "Repuesto guardado correctamente");
+                    vista.limpiarFormulario();
+                } else {
+                    JOptionPane.showMessageDialog(vista, "No se pudo guardar el repuesto");
+                }
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(vista, "Error al guardar en la base de datos: " + e.getMessage());
+                // Aquí capturas errores de la base de datos, no de la validación del formulario
             }
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(vista, "Error al guardar: " + e.getMessage());
         }
+        // Si repuesto es null, significa que hubo un error en el formulario (precio o tipo inválido)
+        // El mensaje de error ya se mostró en getDatosFormulario()
     }
 
 

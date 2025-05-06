@@ -16,7 +16,6 @@ public class RepuestoDAO implements CrudDAO<Repuesto> {
     public RepuestoDAO() {
 
     }
-
     @Override
     public boolean agregar(Repuesto repuesto) {
         String sql = "insert into repuesto (nombre_repuesto, tipo_repuesto, marca, modelo_compatible, vida_util_estimada, precio) values (?,?,?,?,?,?)";
