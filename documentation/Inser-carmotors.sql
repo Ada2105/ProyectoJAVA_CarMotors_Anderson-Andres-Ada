@@ -88,6 +88,6 @@ INSERT INTO cliente_actividad (id_cliente, id_actividad, resultado) VALUES
 (3, 1, 'RECHAZADO');
 
 -- Inserciones para la tabla Evaluacion_Proveedor
-INSERT INTO Evaluacion_Proveedor (id_proveedor, fecha_evaluacion, puntualidad, calidad_producto, costo, observaciones) VALUES
+INSERT INTO evaluacion_proveedor (id_proveedor, fecha_evaluacion, puntualidad, calidad_producto, costo, observaciones) VALUES
 (1, '2025-05-03', 5, 4, 3, 'Buen proveedor en general'),
 (2, '2025-05-06', 4, 5, 2, 'Calidad excelente pero precios altos');
