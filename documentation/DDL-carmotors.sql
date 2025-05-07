@@ -127,7 +127,7 @@ CREATE TABLE factura (
 );
 
 -- Tabla Detalle_Factura
-CREATE TABLE detalle_Factura (
+CREATE TABLE detalle_factura (
     id_detalle_factura INT PRIMARY KEY AUTO_INCREMENT,
     id_factura INT NOT NULL,
     concepto ENUM('Servicio', 'Repuesto') NOT NULL,
